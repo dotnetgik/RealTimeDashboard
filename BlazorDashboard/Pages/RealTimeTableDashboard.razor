@@ -1,0 +1,51 @@
+﻿<h3>RealTimeTableDashboard</h3>
+
+@page "/realtimedashboard"
+@using Microsoft.AspNetCore.SignalR.Client
+
+<h1>@IsConnected</h1>
+
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Details</th>
+    </tr>
+    @foreach (var message in messages)
+    {
+        <tr>
+            <td>@message.Id</td>
+            <td>@message.Details</td>
+        </tr>
+    }
+</table>
+
+@code {
+    private HubConnection hubConnection; //for connecting to SignalR
+    private readonly string functionAppBaseUri = "http://localhost:7071/api/"; //URL for function app. Leave this as is for now.
+
+    public List<DashboardMessage> messages = new List<DashboardMessage>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(functionAppBaseUri)
+            .Build();
+
+        hubConnection.On<DashboardMessage>("dashboardMessage", (clientMessage) =>
+        {
+            messages.Add(clientMessage);
+            StateHasChanged(); //This tells Blazor that the UI needs to be updated
+    });
+
+        await hubConnection.StartAsync(); //start connection!
+
+
+    }
+
+    public bool IsConnected =>
+        hubConnection.State == HubConnectionState.Connected;
+
+}
+
+
+
