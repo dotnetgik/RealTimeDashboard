@@ -23,25 +23,14 @@ namespace RealTimeDashboard
             return connectionInfo;
         }
 
-        //Send the messages!
-        [FunctionName("messages")]
-        public static Task SendMessage(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post")] ClientMessage clientMessage, [SignalR(HubName = "chatHub")] IAsyncCollector<SignalRMessage> signalRMessages)
-        {
-            return signalRMessages.AddAsync(
-                new SignalRMessage
-                {
-                    Target = "clientMessage",
-                    Arguments = new[] { clientMessage }
-                });
-        }
+       
 
         [FunctionName("Dashboard")]
         public static Task SendDataToDashBoard([CosmosDBTrigger(
         databaseName: "SampleDb",
         collectionName: "SampleCollection",
         ConnectionStringSetting = "CosmosDbConnectionstring",
-        LeaseCollectionName = "leases")]IReadOnlyList<Document> input, [SignalR(HubName = "Dashboard")] IAsyncCollector<SignalRMessage> signalRMessages, ILogger log)
+        LeaseCollectionName = "leases")]IReadOnlyList<Document> input, [SignalR(HubName = "Dashboard")] IAsyncCollector<SignalRMessage> signalrMessageForDashboard, ILogger log)
         {
             if (input != null && input.Count > 0)
             {
@@ -55,7 +44,7 @@ namespace RealTimeDashboard
                 Details = input?[0].GetPropertyValue<string>("details")
             };
 
-            return signalRMessages.AddAsync(
+            return signalrMessageForDashboard.AddAsync(
                 new SignalRMessage
                 {
                     Target = "dashboardMessage",
