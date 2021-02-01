@@ -23,22 +23,16 @@ namespace RealTimeDashboard
             return connectionInfo;
         }
 
-       
 
         [FunctionName("Dashboard")]
-        public static Task SendDataToDashBoard([CosmosDBTrigger(
-        databaseName: "SampleDb",
+        public static Task SendDataToDashBoard([CosmosDBTrigger(databaseName: "SampleDb",
         collectionName: "SampleCollection",
         ConnectionStringSetting = "CosmosDbConnectionstring",
-        LeaseCollectionName = "leases")]IReadOnlyList<Document> input, [SignalR(HubName = "Dashboard")] IAsyncCollector<SignalRMessage> signalrMessageForDashboard, ILogger log)
+        LeaseCollectionName = "leases")]IReadOnlyList<Document> input, 
+            [SignalR(HubName = "Dashboard")] IAsyncCollector<SignalRMessage> signalrMessageForDashboard,
+            ILogger log)
         {
-            if (input != null && input.Count > 0)
-            {
-                log.LogInformation("Documents modified " + input.Count);
-                log.LogInformation("First document Id " + input[0].Id);
-            }
-
-            var dashboardMessage= new DashboardMessage()
+            var dashboardMessage= new DashboardMessage
             {
                 Id = input?[0].GetPropertyValue<string>("id"),
                 Details = input?[0].GetPropertyValue<string>("details")

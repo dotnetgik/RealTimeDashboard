@@ -31,16 +31,45 @@
             .WithUrl(functionAppBaseUri)
             .Build();
 
-        hubConnection.On<DashboardMessage>("dashboardMessage", (clientMessage) =>
-        {
-            messages.Add(clientMessage);
-            StateHasChanged(); //This tells Blazor that the UI needs to be updated
-    });
+        Connect();
 
         await hubConnection.StartAsync(); //start connection!
 
 
     }
+
+    private void Connect()
+    {
+        hubConnection.On<DashboardMessage>("dashboardMessage", (clientMessage) =>
+        {
+            Console.Write("11");
+            if (messages != null)
+            {
+                var data = (from m in messages
+                            where m.Id == clientMessage.Id
+                            select m).FirstOrDefault();
+
+                if (data == null)
+                {
+                    messages.Add(clientMessage);
+                }
+                else
+                {
+                    data.Id = clientMessage.Id;
+                    data.Details = clientMessage.Details;
+
+                }
+            }
+            else
+            {
+                messages?.Add(clientMessage);
+            }
+        });
+
+
+        StateHasChanged(); //This tells Blazor that the UI needs to be updated
+    }
+
 
     public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;
