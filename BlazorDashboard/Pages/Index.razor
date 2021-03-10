@@ -1,7 +1,124 @@
 ﻿@page "/"
-
+@using ChartJs.Blazor.PieChart
+@using ChartJs.Blazor.Util
+@using ChartJs.Blazor.Common
+@using ChartJs.Blazor.Common.Axes
+@using ChartJs.Blazor.Common.Enums
+@using ChartJs.Blazor.LineChart
+@using ChartJs.Blazor.Util;
+@using System.Drawing
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+<Chart Config="_config"></Chart>
+<button @onclick="AddData">Add Data</button>
+
+@code
+{
+    private const int InitalCount = 7;
+    private LineConfig _config;
+    private Chart _chart=new Chart();
+
+    protected override void OnInitialized()
+    {
+        _config = new LineConfig
+        {
+            Options = new LineOptions
+            {
+                Responsive = true,
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Temprature per hour"
+                },
+                Tooltips = new Tooltips
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Hover = new Hover
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Scales = new Scales
+                {
+                    XAxes = new List<CartesianAxis>
+                    {
+                        new CategoryAxis
+                        {
+                            ScaleLabel = new ScaleLabel
+                            {
+                                LabelString = "Month"
+                            }
+                        }
+                    },
+                    YAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            ScaleLabel = new ScaleLabel
+                            {
+                                LabelString = "Value"
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+
+
+        IDataset<int> dataset1 = new LineDataset<int>(new List<int>(InitalCount){1,7,3,5,8,6,7})
+        {
+            Label = "Pune",
+            BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(255, 99, 132)),
+            BorderColor = ColorUtil.FromDrawingColor(Color.FromArgb(255, 99, 132)),
+            Fill = FillingMode.Disabled
+        };
+        _config.Data.Datasets.Add(dataset1);
+
+        IDataset<int> dataset2 = new LineDataset<int>(new List<int>(InitalCount){2,8,2,5,3,6,7})
+        {
+            Label = "Mumbai",
+            BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(255, 125, 200)),
+            BorderColor = ColorUtil.FromDrawingColor(Color.FromArgb(255, 125, 200)),
+            Fill = FillingMode.Disabled
+        };
+
+        _config.Data.Datasets.Add(dataset2);
+    }
+
+    private void AddDataset()
+    {
+        string color = ColorUtil.FromDrawingColor(SampleUtils.ChartColors.All[_config.Data.Datasets.Count % SampleUtils.ChartColors.All.Count]);
+        IDataset<int> dataset = new LineDataset<int>(SampleUtils.RandomScalingFactor(_config.Data.Labels.Count))
+        {
+            Label = $"Dataset {_config.Data.Datasets.Count}",
+            BackgroundColor = color,
+            BorderColor = color,
+            Fill = FillingMode.Disabled
+        };
+
+        _config.Data.Datasets.Add(dataset);
+        _chart.Update();
+    }
+    private void AddData()
+    {
+        if (_config.Data.Datasets.Count == 0)
+            return;
+
+        string month = SampleUtils.TimeofTheDay[_config.Data.Labels.Count % SampleUtils.TimeofTheDay.Count];
+        _config.Data.Labels.Add(month);
+
+        foreach (IDataset<int> dataset in _config.Data.Datasets)
+        {
+            dataset.Add(SampleUtils.RandomScalingFactor());
+        }
+
+       // _chart.Update();
+    }
+
+}

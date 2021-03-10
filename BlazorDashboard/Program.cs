@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Blazored.Toast;
 
 namespace BlazorDashboard
 {
@@ -18,7 +19,7 @@ namespace BlazorDashboard
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            builder.Services.AddBlazoredToast();
             await builder.Build().RunAsync();
         }
     }
