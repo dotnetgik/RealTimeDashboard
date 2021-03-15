@@ -11,7 +11,7 @@ namespace CosmosDbCrudTrigger
 			while (true)
 			{
 				await new CosmosDbOperation().Add().ConfigureAwait(false);
-				System.Threading.Thread.Sleep(12000);
+				System.Threading.Thread.Sleep(5000);
 			}
 			
 		}

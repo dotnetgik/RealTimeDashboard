@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDashboard", "BlazorDa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealTimeDashboard.Shared", "RealTimeDashboard.Shared\RealTimeDashboard.Shared.csproj", "{43291C67-BD3C-4B2F-9DF5-52B1E3D9562F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosDbCrudTrigger", "CosmosDbCrudTrigger\CosmosDbCrudTrigger.csproj", "{2A273709-BD47-4097-A15F-19AEF4A8F0C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosmosDbCrudTrigger", "CosmosDbCrudTrigger\CosmosDbCrudTrigger.csproj", "{2A273709-BD47-4097-A15F-19AEF4A8F0C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
