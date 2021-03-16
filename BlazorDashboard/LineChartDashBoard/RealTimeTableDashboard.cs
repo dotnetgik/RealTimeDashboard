@@ -18,14 +18,14 @@ namespace BlazorDashboard.LineChartDashBoard
 
 		private const int InitalCount = 7;
 		protected LineConfig _config;
-		protected Chart _chart = new Chart();
+		
 
 		protected HubConnection hubConnection; //for connecting to SignalR
 		protected readonly string functionAppBaseUri = "http://localhost:7071/api/"; //URL for function app. Leave this as is for now.
 
 		public List<DashboardMessage> messages = new List<DashboardMessage>();
 
-		IDataset<int> dataset1 = new LineDataset<int>(new List<int>(InitalCount))
+		readonly IDataset<int> _dataSetForPune = new LineDataset<int>(new List<int>(InitalCount))
 		{
 			Label = "Pune",
 			BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(255, 99, 132)),
@@ -34,7 +34,7 @@ namespace BlazorDashboard.LineChartDashBoard
 		};
 
 
-		IDataset<int> dataset2 = new LineDataset<int>(new List<int>(InitalCount))
+		readonly IDataset<int> _dataSetForMumbai = new LineDataset<int>(new List<int>(InitalCount))
 		{
 			Label = "Mumbai",
 			BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(255, 125, 200)),
@@ -50,16 +50,18 @@ namespace BlazorDashboard.LineChartDashBoard
 			hubConnection = new HubConnectionBuilder()
 						.WithUrl(functionAppBaseUri)
 						.Build();
-
 			Connect();
 
 			await hubConnection.StartAsync(); //start connection!
 
-			_config.Data.Datasets.Add(dataset1);
-			_config.Data.Datasets.Add(dataset2);
+			foreach (var time in SampleUtils.TimeofTheDay)
+			{
+				_config.Data.Labels.Add(time);
+			}
+			_config.Data.Datasets.Add(_dataSetForPune);
+			_config.Data.Datasets.Add(_dataSetForMumbai);
 		}
-
-
+		
 		private void AddData()
 		{
 			if (_config.Data.Datasets.Count == 0)
@@ -129,10 +131,10 @@ namespace BlazorDashboard.LineChartDashBoard
 					switch (message.Id)
 					{
 						case "1":
-							dataset1.Add(Convert.ToInt16(message.Details));
+							_dataSetForPune.Add(Convert.ToInt16(message.Details));
 							break;
 						case "2":
-							dataset2.Add(Convert.ToInt16(message.Details));
+							_dataSetForMumbai.Add(Convert.ToInt16(message.Details));
 							break;
 					}
 				}

@@ -2,12 +2,33 @@
 @inherits BlazorDashboard.LineChartDashBoard.RealTimeTableDashboard
 @using Pages;
 
-<h3>RealTimeTableDashboard</h3>
 
-<div class="card" style="width: 500px;margin:3px;border-radius:10px">
-    <Chart Config="_config"></Chart>
-</div>
 
-<div class="card" style="width: 500px;margin:3px;border-radius:10px">
-   <BarChart></BarChart>
-</div>
+<table>
+    <tr>
+        <th style="align-content: center">Line Chart </th>
+
+        <th style="align-content: center">Bar Chart </th>
+    </tr>
+    <tr>
+        <td>
+
+            <div class="card" style="width:700px; margin: 3px; border-radius: 10px">
+                <Chart Config="_config"></Chart>
+            </div>
+        </td>
+        <td>
+            <div class="card" style="width:700px; margin: 3px; border-radius: 10px">
+                <BarChart></BarChart>
+            </div>
+        </td>
+    </tr>
+</table>
+
+@if (!IsConnected)
+{
+<div align="center"><Loader></Loader></div>
+}
+else {
+<div style="background-color: blue;color: white">Connected</div>
+}
