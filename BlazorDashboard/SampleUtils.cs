@@ -11,7 +11,7 @@ public static class SampleUtils
     {
         private static readonly Lazy<IReadOnlyList<Color>> _all = new Lazy<IReadOnlyList<Color>>(() => new Color[7]
         {
-                Red, Orange, Yellow, Green, Blue, Purple, Grey
+            Red, Orange, Yellow, Green, Blue, Purple, Grey
         });
 
         public static IReadOnlyList<Color> All => _all.Value;
@@ -27,20 +27,20 @@ public static class SampleUtils
 
     public static IReadOnlyList<string> TimeofTheDay { get; } = new ReadOnlyCollection<string>(new[]
     {
-            "00.00","00.15","00.30", "00.45", 
-            "1.00", "1.15", "1.30", "1.45", 
-            "2.00", "2.15", "2.30", "2.45",
-            "3.00", "3.15", "3.30", "3.45",
-            "4.00", "4.15", "4.30", "4.45"
-        });
+        "00.00", "00.15", "00.30", "00.45",
+        "1.00", "1.15", "1.30", "1.45",
+        "2.00", "2.15", "2.30", "2.45",
+        "3.00", "3.15", "3.30", "3.45",
+        "4.00", "4.15", "4.30", "4.45"
+    });
 
     public static IReadOnlyList<string> TimeofTheDay1 { get; } = new ReadOnlyCollection<string>(new[]
     {
-	    "00.00","00.15","00.30", "00.45",
-	    "1.00", "1.15", "1.30", "1.45",
-	    "2.00", "2.15", "2.30", "2.45",
-	    "3.00", "3.15", "3.30", "3.45",
-	    "4.00", "4.15", "4.30", "4.45"
+        "00.00", "00.15", "00.30", "00.45",
+        "1.00", "1.15", "1.30", "1.45",
+        "2.00", "2.15", "2.30", "2.45",
+        "3.00", "3.15", "3.30", "3.45",
+        "4.00", "4.15", "4.30", "4.45"
     });
 
     private static int RandomScalingFactorThreadUnsafe() => _rng.Next(0, 50);

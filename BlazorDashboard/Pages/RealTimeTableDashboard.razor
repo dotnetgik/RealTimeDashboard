@@ -3,7 +3,6 @@
 @using Pages;
 
 
-
 <table>
     <tr>
         <th style="align-content: center">Line Chart </th>
@@ -14,7 +13,7 @@
         <td>
 
             <div class="card" style="width:700px; margin: 3px; border-radius: 10px">
-                <Chart Config="_config"></Chart>
+                <Chart Config="Config"></Chart>
             </div>
         </td>
         <td>
@@ -27,8 +26,11 @@
 
 @if (!IsConnected)
 {
-<div align="center"><Loader></Loader></div>
+    <div align="center">
+        <Loader></Loader>
+    </div>
 }
-else {
-<div style="background-color: blue;color: white">Connected</div>
+else
+{
+    <div style="background-color: blue;color: white">Connected</div>
 }

@@ -12,17 +12,19 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BlazorDashboard.BarChartsDashboard
 {
-	public class BarChart: ComponentBase
-	{
-        private const int InitalCount = 7;
+    public class BarChart : ComponentBase
+    {
+        private const int InitialCount = 7;
         protected BarConfig _config;
         protected Random _rng = new Random();
         protected Chart _chart;
-        protected HubConnection HubConnection; //for connecting to SignalR
-        protected readonly string FunctionAppBaseUri = "http://localhost:7071/api/"; //URL for function app. Leave this as is for now.
+        private HubConnection HubConnection; //for connecting to SignalR
+
+        private readonly string
+            FunctionAppBaseUri = "http://localhost:7071/api/"; //URL for function app. Leave this as is for now.
 
 
-        IDataset<int> dataset1 = new BarDataset<int>(new List<int>(InitalCount))
+        IDataset<int> dataset1 = new BarDataset<int>(new List<int>(InitialCount))
         {
             Label = "Pune",
             BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(255, 99, 132)),
@@ -30,7 +32,7 @@ namespace BlazorDashboard.BarChartsDashboard
         };
 
 
-        IDataset<int> dataset2 = new BarDataset<int>(new List<int>(InitalCount))
+        readonly IDataset<int> dataset2 = new BarDataset<int>(new List<int>(InitialCount))
         {
             Label = "Mumbai",
             BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(255, 125, 200)),
@@ -60,22 +62,22 @@ namespace BlazorDashboard.BarChartsDashboard
 
         private static BarConfig GetConfig()
         {
-	        return new BarConfig
-	        {
-		        Options = new BarOptions
-		        {
-			        Responsive = true,
-			        Legend = new Legend
-			        {
-				        Position = Position.Top
-			        },
-			        Title = new OptionsTitle
-			        {
-				        Display = true,
-				        Text = "Temperature per Hour"
-			        }
-		        }
-	        };
+            return new BarConfig
+            {
+                Options = new BarOptions
+                {
+                    Responsive = true,
+                    Legend = new Legend
+                    {
+                        Position = Position.Top
+                    },
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Corona patient Reported per 15 min"
+                    }
+                }
+            };
         }
 
         private void AddData()
@@ -91,7 +93,6 @@ namespace BlazorDashboard.BarChartsDashboard
         {
             HubConnection.On<List<DashboardMessage>>("dashboardMessage", (clientMessage) =>
             {
-
                 foreach (var message in clientMessage)
                 {
                     switch (message.Id)

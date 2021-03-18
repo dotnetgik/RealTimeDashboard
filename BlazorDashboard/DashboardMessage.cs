@@ -10,5 +10,4 @@ namespace BlazorDashboard
         public string Id { get; set; }
         public string Details { get; set; }
     }
-
 }
