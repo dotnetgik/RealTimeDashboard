@@ -74,7 +74,7 @@ namespace BlazorDashboard.BarChartsDashboard
                     Title = new OptionsTitle
                     {
                         Display = true,
-                        Text = "Corona patient Reported per 15 min"
+                        Text = "Temprature"
                     }
                 }
             };
